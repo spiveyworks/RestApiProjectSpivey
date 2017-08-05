@@ -59,7 +59,7 @@ namespace WebApiUnitTest
         public async Task GetUserVisitsStatesForNonExistingUser()
         {
             var controller = new UserVisitsController(VisitsRepositoryFactory.GetInstance(), GeographyRepositoryFactory.GetInstance());
-            var result = controller.GetUserVisitsStates(_nonExistingUser);
+            var result = await controller.GetUserVisitsStates(_nonExistingUser);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
@@ -97,7 +97,7 @@ namespace WebApiUnitTest
         public async Task GetUserVisitForNonExistingUserAndNonExistingVisit()
         {
             var controller = new UserVisitsController(VisitsRepositoryFactory.GetInstance(), GeographyRepositoryFactory.GetInstance());
-            var result = controller.GetUserVisit(_nonExistingUser, _nonExistingVisit);
+            var result = await controller.GetUserVisit(_nonExistingUser, _nonExistingVisit);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
@@ -116,7 +116,7 @@ namespace WebApiUnitTest
                 City = _existingCity,
                 State = _existingState
             };
-            var result = controller.PostUserVisit(_existingUser, visitRepresentation);
+            var result = await controller.PostUserVisit(_existingUser, visitRepresentation);
             Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
 
@@ -129,7 +129,7 @@ namespace WebApiUnitTest
                 City = _existingCity,
                 State = _existingState
             };
-            var result = controller.PostUserVisit(_nonExistingUser, visitRepresentation);
+            var result = await controller.PostUserVisit(_nonExistingUser, visitRepresentation);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
@@ -142,7 +142,7 @@ namespace WebApiUnitTest
                 City = _nonExistingCity,
                 State = _existingState
             };
-            var result = controller.PostUserVisit(_nonExistingUser, visitRepresentation);
+            var result = await controller.PostUserVisit(_nonExistingUser, visitRepresentation);
             Assert.IsTrue(result.GetType().Equals(typeof(BadRequestResult)));
         }
 
@@ -156,7 +156,7 @@ namespace WebApiUnitTest
         public async Task DeleteUserVisitForExistingUserAndExistingVisit()
         {
             var controller = new UserVisitsController(VisitsRepositoryFactory.GetInstance(), GeographyRepositoryFactory.GetInstance());
-            var result = controller.DeleteUserVisit(_existingUser, _existingVisit);
+            var result = await controller.DeleteUserVisit(_existingUser, _existingVisit);
             Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
 
@@ -164,7 +164,7 @@ namespace WebApiUnitTest
         public async Task DeleteUserVisitForNonExistingUser()
         {
             var controller = new UserVisitsController(VisitsRepositoryFactory.GetInstance(), GeographyRepositoryFactory.GetInstance());
-            var result = controller.DeleteUserVisit(_nonExistingUser, _existingVisit);
+            var result = await controller.DeleteUserVisit(_nonExistingUser, _existingVisit);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
@@ -172,7 +172,7 @@ namespace WebApiUnitTest
         public async Task DeleteUserVisitForExistingUserAndNonExistingVisit()
         {
             var controller = new UserVisitsController(VisitsRepositoryFactory.GetInstance(), GeographyRepositoryFactory.GetInstance());
-            var result = controller.DeleteUserVisit(_nonExistingUser, _nonExistingVisit);
+            var result = await controller.DeleteUserVisit(_nonExistingUser, _nonExistingVisit);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 

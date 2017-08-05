@@ -62,18 +62,39 @@ You may use whatever language or tools you wish to complete the exercise.  Keep 
 
 ##Deployment Notes
 
-- The SQL database is running in Azure with the following connection string:
+- The SQL database is running in Azure with the following connection string. You can also replace appSettings.json with your own instance of the DB.
+- A SQL create script is in the root Github folder.
 Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=restapiprojectspivey;Persist Security Info=False;User ID=restadmin;Password=Walking in the woods.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
+- The appSettings.json needs to be updated with your local file system copy of City.csv and State.csv.
+
 ##Usage Notes
+-Valid calls that should work
+1. HTTP GET http://localhost:61372/user/1/visits?skip=0&take=1
+2. HTTP GET http://localhost:61372/state/al/cities
+3. HTTP GET http://localhost:61372/1/al/visits
+4. HTTP POST http://localhost:61372/1/visits
+   HEADERS:
+   Content-Type: application/json
+   {
+     city: "West Blocton",
+     state: "AL"
+   }
+5. HTTP DELETE http://localhost:61372/user/1/visit/86c541a5-2ef9-410e-8481-dea3ca7947e8
+6. HTTP GET http://localhost:61372/user/1/visits
+7. HTTP GET http://localhost:61372/user/1/visits/states
+
 - In any project other than a sample, you never commit credentials to a repository, whether it's in source code or notes. But for this sample project, they are included 
 - in the appSettings.json for convenience and are pointing to an Azure SQL instance I'm leaving running this week.
 - Time boxing the project, but the appSettings should contain an encrypted connection string.
-- API paging is allowed, like the following example: HTTP GET http://localhost:61372/user/1/visits?skip=0&take=1
+- API paging is allowed on the following endpoint: HTTP GET http://localhost:61372/user/1/visits?skip=0&take=1
 - There is no Authorization header required, but the reference implementation with TODO statements is in the Web API project's Authorization folder set of classes.
 - Claims are checked before POST visit and DELETE visit, but are hard coded to always succeed. GET any resource is not checked at all.
 - This API only is setup to use JSON, but a XML Media Formatter could be used to also accept XML.
-- There's some unit tests.
+- There's unit tests for good coverage for the web API project, but because of time boxing, unit tests were not made for the file and SQL repository implementations.
+- The unit tests that are currently broken are because of this.Request being null in the controller, which happened after adding bearer token claims checks.
 - Time boxing this project, there's currently no rate limiting, but it could be implemented in the controllers and use a server-side cache or a shared-cache if 
   it the rate limiting should be constrained across the whole server farm, or it could be constrained per user or IP address.
-
+- Time voxing the project, but it would be good to add diagnostics so we could turn on information, verbose or error logging to see what's going on.
+- The database is made compact by using ints, while the HTTP representation outward is more human readable. It's not always necessary to be so compact in a DB,
+- but it's a desirable characteristic for performance and Machine Learning, which will need strings tokenized anyways.
