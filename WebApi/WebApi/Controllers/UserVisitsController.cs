@@ -93,7 +93,8 @@ namespace WebApi.Controllers
                         City = _citiesCache.Where(c => c.CityId == visit.CityId).FirstOrDefault().Name,
                         State = _statesCache.Where(s => s.StateId == visit.StateId).FirstOrDefault().Abbreviation,
                         Created = visit.Created,
-                        User = visit.User
+                        User = visit.User,
+                        VisitId = visit.VisitId
                     });
 
                 response = this.Ok(visitRepresentations);
@@ -159,7 +160,8 @@ namespace WebApi.Controllers
                     User = userVisit.User,
                     Created = userVisit.Created,
                     City = city.Name,
-                    State = state.Abbreviation
+                    State = state.Abbreviation,
+                    VisitId = userVisit.VisitId
                 };
                 response = this.Ok(visitRepresentation);
             }
@@ -194,12 +196,26 @@ namespace WebApi.Controllers
                 VisitId = Guid.NewGuid().ToString()
             };
             await this.VisitsRepository.SaveVisit(userVisit);
-            return this.Ok();
+
+            var visitRepresentation = new VisitRepresentation()
+            {
+                City = city.Name,
+                Created = userVisit.Created,
+                State = state.Abbreviation,
+                User = user,
+                VisitId = userVisit.VisitId
+            };
+
+            return this.Ok(visitRepresentation);
         }
         
         [HttpDelete("user/{user}/visit/{visit}")]
         public async Task<IActionResult> DeleteUserVisit(int user, string visit)
         {
+            await this.VisitsRepository.DeleteVisit(user, visit);
+
+            //200 OK is always returned unless there is an internal server error, because this is an
+            //idempotent call. If there is an error, the framework will auto reply with 500 internal server error.
             return this.Ok();
         }
 

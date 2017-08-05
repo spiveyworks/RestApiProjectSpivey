@@ -15,20 +15,38 @@ namespace SqlVisitsRepository
             this._connectionString = connectionString;
         }
 
-        public Task DeleteVisit(string visitId)
+        public async Task DeleteVisit(int userId, string visitId)
         {
-            throw new NotImplementedException();
+            var visitIdGuid = new Guid(visitId);
+
+            try
+            {
+                using (var db = new VisitsContext())
+                {
+                    var visitEntity = db.UserVisits.Where(v => v.VisitId == visitIdGuid && v.UserId == userId).FirstOrDefault();
+
+                    if (visitEntity != null)
+                    {
+                        db.UserVisits.Remove(visitEntity);
+                        await db.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw new RepositoryException("Problem deleting a visit.", exc);
+            }
         }
 
         public async Task<Visit> GetVisit(string visitId)
         {
             var vid = new Guid(visitId);
-            var db = new VisitsContext();
             UserVisits visitEntity = null;
 
             try
             {
-                visitEntity = db.UserVisits.Where(v => v.VisitId == vid).FirstOrDefault();
+                using (var db = new VisitsContext())
+                    visitEntity = db.UserVisits.Where(v => v.VisitId == vid).FirstOrDefault();
             }
             catch (Exception exc)
             {
@@ -37,26 +55,27 @@ namespace SqlVisitsRepository
 
             Visit result = null;
 
-            result = new Visit()
-            {
-                CityId = visitEntity.CityId,
-                Created = visitEntity.Created,
-                StateId = visitEntity.StateId,
-                User = visitEntity.UserId,
-                VisitId = visitEntity.VisitId.ToString()
-            };
+            if (visitEntity != null)
+                result = new Visit()
+                {
+                    CityId = visitEntity.CityId,
+                    Created = visitEntity.Created,
+                    StateId = visitEntity.StateId,
+                    User = visitEntity.UserId,
+                    VisitId = visitEntity.VisitId.ToString()
+                };
 
             return result;
         }
 
         public async Task<IEnumerable<Visit>> GetVisitsByUserId(int userId, int skip, int take)
         {
-            var db = new VisitsContext();
             UserVisits[] visits = null;
 
             try
             {
-                visits = db.UserVisits.Where(v => v.UserId == userId).OrderBy(v => v.Created).Skip(skip).Take(take).ToArray();
+                using (var db = new VisitsContext())
+                    visits = db.UserVisits.Where(v => v.UserId == userId).OrderBy(v => v.Created).Skip(skip).Take(take).ToArray();
             }
             catch (Exception exc)
             {
@@ -82,7 +101,6 @@ namespace SqlVisitsRepository
 
         public async Task SaveVisit(Visit visit)
         {
-            var db = new VisitsContext();
             var visitEntity = new UserVisits()
             {
                 CityId = visit.CityId,
@@ -92,26 +110,31 @@ namespace SqlVisitsRepository
                 VisitId = new Guid(visit.VisitId)
             };
 
-            try
+            using (var db = new VisitsContext())
             {
-                db.UserVisits.Add(visitEntity);
+                try
+                {
+                    db.UserVisits.Add(visitEntity);
+                    await db.SaveChangesAsync();
+                }
+                catch (Exception exc)
+                {
+                    throw new RepositoryException("Problem saving a visit.", exc);
+                }
             }
-            catch (Exception exc)
-            {
-                throw new RepositoryException("Problem saving a visit.", exc);
-            }
-
-            await db.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<short>> GetVisitsDistinctStateIds(int userId)
         {
-            var db = new VisitsContext();
             short[] stateIds = null;
 
             try
             {
-                var byteStateIds = db.UserVisits.Where(v => v.UserId == userId).Select(v => v.StateId).Distinct().ToArray();
+                byte[] byteStateIds = null;
+
+                using (var db = new VisitsContext())
+                    byteStateIds = db.UserVisits.Where(v => v.UserId == userId).Select(v => v.StateId).Distinct().ToArray();
+
                 stateIds = byteStateIds.Select(s => (short)s).ToArray();
             }
             catch (Exception exc)

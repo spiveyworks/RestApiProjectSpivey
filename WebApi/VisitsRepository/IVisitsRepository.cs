@@ -8,7 +8,7 @@ namespace VisitsRepository
     {
         Task SaveVisit(Visit visit);
         Task<Visit> GetVisit(string visitId);
-        Task DeleteVisit(string visitId);
+        Task DeleteVisit(int userId, string visitId);
         Task<IEnumerable<Visit>> GetVisitsByUserId(int userId, int skip, int take);
         Task<IEnumerable<short>> GetVisitsDistinctStateIds(int userId);
     }
