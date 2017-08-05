@@ -13,6 +13,8 @@ namespace WebApi.Controllers
     {
         private IVisitsRepository _visitsRepository;
         private IGeographyRepository _geographyRepository;
+        private static State[] _statesCache = null;
+        private static City[] _citiesCache = null;
 
         public IVisitsRepository VisitsRepository
         {
@@ -64,7 +66,28 @@ namespace WebApi.Controllers
 
             if (visits.Length > 0)
             {
-                response = this.Ok(visits);
+                var visitRepresentations = new List<VisitRepresentation>();
+
+                //Retrieve states for the first time, if they haven't already. These can be cached because
+                //the dataset is small and doesn't change often.
+                if (_statesCache == null)
+                    _statesCache = (await this.GeographyRepository.GetStatesAsync()).ToArray();
+
+                //Retrieve cities for the first time, if they haven't already. These can be cached because
+                //the dataset is relatively small and doesn't change often.
+                if (_citiesCache == null)
+                    _citiesCache = (await this.GeographyRepository.GetCitiesAsync()).ToArray();
+
+                foreach (var visit in visits)
+                    visitRepresentations.Add(new VisitRepresentation()
+                    {
+                        City = _citiesCache.Where(c => c.CityId == visit.CityId).FirstOrDefault().Name,
+                        State = _statesCache.Where(s => s.StateId == visit.StateId).FirstOrDefault().Abbreviation,
+                        Created = visit.Created,
+                        User = visit.User
+                    });
+
+                response = this.Ok(visitRepresentations);
             }
             else
             {
@@ -125,6 +148,25 @@ namespace WebApi.Controllers
         [Route("user/{user}/visits")]
         public async Task<IActionResult> PostUserVisit(int user, [FromBody]PostVisitRepresentation visit)
         {
+            var tasks = new List<Task>();
+            var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
+            tasks.Add(stateTask);
+            var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
+            tasks.Add(cityTask);
+            var state = stateTask.Result;
+            var city = cityTask.Result;
+
+            await Task.WhenAll(tasks);
+
+            var userVisit = new Visit()
+            {
+                Created = DateTime.UtcNow,
+                User = user,
+                CityId = city.CityId,
+                StateId = state.StateId,
+                VisitId = Guid.NewGuid().ToString()
+            };
+            await this.VisitsRepository.SaveVisit(userVisit);
             return this.Ok();
         }
         

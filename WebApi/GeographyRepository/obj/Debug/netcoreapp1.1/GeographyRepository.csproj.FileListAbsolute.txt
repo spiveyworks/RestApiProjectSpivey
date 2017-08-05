@@ -4,3 +4,4 @@ C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\
 C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.AssemblyInfo.cs
 C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.dll
 C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.csprojResolveAssemblyReference.cache

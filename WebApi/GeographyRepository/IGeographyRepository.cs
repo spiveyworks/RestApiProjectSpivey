@@ -12,5 +12,8 @@ namespace GeographyRepository
         Task<IEnumerable<City>> GetCitiesAsync(string stateAbbreviation);
         Task<City> GetCityAsync(int cityId);
         Task<State> GetStateAsync(short stateId);
+        Task<State> GetStateByAbbreviationAsync(string abbreviation);
+        Task<City> GetCityAsync(string stateAbbreviation, string cityName);
+        Task<IEnumerable<City>> GetCitiesAsync();
     }
 }

@@ -32,7 +32,8 @@ namespace SqlVisitsRepository
                 CityId = rv.CityId,
                 Created = rv.Created,
                 StateId = rv.StateId,
-                User = rv.UserId
+                User = rv.UserId,
+                VisitId = rv.VisitId.ToString()
             };
 
             return result;
@@ -51,7 +52,8 @@ namespace SqlVisitsRepository
                     CityId = v.CityId,
                     Created = v.Created,
                     StateId = v.StateId,
-                    User = v.UserId
+                    User = v.UserId,
+                    VisitId = v.VisitId.ToString()
                 });
             }
 
@@ -60,7 +62,17 @@ namespace SqlVisitsRepository
 
         public async Task SaveVisit(Visit visit)
         {
-            throw new NotImplementedException();
+            var db = new VisitsContext();
+            var visitEntity = new UserVisits()
+            {
+                CityId = visit.CityId,
+                Created = visit.Created,
+                StateId = (byte)visit.StateId,
+                UserId = visit.User,
+                VisitId = new Guid(visit.VisitId)
+            };
+            db.UserVisits.Add(visitEntity);
+            await db.SaveChangesAsync();
         }
     }
 }

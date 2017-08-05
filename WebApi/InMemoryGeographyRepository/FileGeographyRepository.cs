@@ -73,6 +73,51 @@ namespace FileGeographyRepository
             return cities;
         }
 
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            var cities = new List<City>();
+            string[] lines = null;
+
+            try
+            {
+                lines = System.IO.File.ReadAllLines(this._citiesCsvFilePath);
+
+                //Remove the first line file header
+                if (lines.Length > 0)
+                    lines = lines.Skip(1).ToArray();
+            }
+            catch (Exception exc)
+            {
+
+            }
+
+            var currentCityId = 1;
+
+            if (lines != null && lines.Length > 0)
+                foreach (var line in lines)
+                {
+                    try
+                    {
+                        var data = line.Split(',');
+                        var city = new City()
+                        {
+                            CityId = currentCityId,
+                            Name = data[0],
+                            StateId = short.Parse(data[1])
+                        };
+                        
+                        cities.Add(city);
+                        currentCityId += 1;
+                    }
+                    catch
+                    {
+                        //Swallow any problem with an individual record
+                    }
+                }
+
+            return cities;
+        }
+
         public async Task<IEnumerable<State>> GetStatesAsync()
         {
             var states = new List<State>();
@@ -104,7 +149,7 @@ namespace FileGeographyRepository
         {
             var stateAbbreviationUpper = stateAbbreviation.ToUpper();
             var states = await this.GetStatesAsync();
-            return states.Where(state => state.Abbreviation.ToUpper() == stateAbbreviationUpper).FirstOrDefault() != null;
+            return states.Where(state => state.Abbreviation == stateAbbreviationUpper).FirstOrDefault() != null;
         }
         
         public async Task<City> GetCityAsync(int cityId)
@@ -156,6 +201,20 @@ namespace FileGeographyRepository
         {
             var state = (await this.GetStatesAsync()).Where(s => s.StateId == stateId).FirstOrDefault();
             return state;
+        }
+
+        public async Task<State> GetStateByAbbreviationAsync(string abbreviation)
+        {
+            var abbreviationUpper = abbreviation.ToUpper();
+            var state = (await this.GetStatesAsync()).Where(s => s.Abbreviation == abbreviationUpper).FirstOrDefault();
+            return state;
+        }
+
+        public async Task<City> GetCityAsync(string stateAbbreviation, string cityName)
+        {
+            var cityNameLower = cityName.ToLower();
+            var city = (await this.GetCitiesAsync(stateAbbreviation)).Where(c => c.Name.ToLower() == cityNameLower).FirstOrDefault();
+            return city;
         }
     }
 }
