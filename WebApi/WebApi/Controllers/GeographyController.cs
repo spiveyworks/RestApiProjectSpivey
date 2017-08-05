@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GeographyRepository;
+using WebApi.Geography;
 
 namespace WebApi.Controllers
 {
@@ -26,18 +27,37 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetStateCities(string state)
         {
             IActionResult response = null;
-            if (await GeographyRepository.DoesStateExistAsync(state))
+
+            //Input validation
+            if (state.Length == 2)
             {
-                var cities = await GeographyRepository.GetCitiesAsync(state);
-                response = this.Ok(cities);
+                var stateUpper = state.ToUpper();
+
+                if (await GeographyRepository.DoesStateExistAsync(stateUpper))
+                {
+                    var cities = (await GeographyRepository.GetCitiesAsync(state)).ToArray();
+                    var stateCitiesRepresentation = new StateCitiesRepresentation()
+                    {
+                        State = state.ToUpper()
+                    };
+
+                    if (cities.Length > 0)
+                        stateCitiesRepresentation.Cities = cities.Select(c => c.Name).ToArray();
+
+                    response = this.Ok(stateCitiesRepresentation);
+                }
+                else
+                {
+                    response = this.NotFound();
+                }
             }
             else
             {
-                response = this.NotFound();
+                response = this.BadRequest();
             }
             
             return response;
         }
-        
+
     }
 }
