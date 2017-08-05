@@ -7,7 +7,7 @@ using GeographyRepository;
 
 namespace WebApi.Controllers
 {
-    public class GeographyController : Controller
+    public class GeographyController : BaseController
     {
         private IGeographyRepository _geographyRepository;
 

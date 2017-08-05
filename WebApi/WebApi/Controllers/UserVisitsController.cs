@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Visits;
 using VisitsRepository;
 using GeographyRepository;
+using Microsoft.AspNetCore.Http;
+using WebApi.Authorization;
 
 namespace WebApi.Controllers
 {
-    public class UserVisitsController : Controller
+    public class UserVisitsController : BaseController
     {
         private IVisitsRepository _visitsRepository;
         private IGeographyRepository _geographyRepository;
@@ -69,6 +71,8 @@ namespace WebApi.Controllers
             tasks.Add(cityCacheTask);
             var stateCacheTask = this.EnsureStateCacheIsPopulated();
             tasks.Add(stateCacheTask);
+
+            //Do all these tasks at once and wait for them to complete.
             await Task.WhenAll(tasks.ToArray());
 
             var visits = visitsTask.Result.ToArray();
@@ -118,6 +122,8 @@ namespace WebApi.Controllers
             tasks.Add(statesTask);
             var stateCacheTask = this.EnsureStateCacheIsPopulated();
             tasks.Add(stateCacheTask);
+
+            //Do all these tasks at once and wait for them to complete.
             await Task.WhenAll(tasks.ToArray());
 
             var stateIds = statesTask.Result.ToArray();
@@ -177,46 +183,80 @@ namespace WebApi.Controllers
         [Route("user/{user}/visits")]
         public async Task<IActionResult> PostUserVisit(int user, [FromBody]PostVisitRepresentation visit)
         {
-            var tasks = new List<Task>();
-            var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
-            tasks.Add(stateTask);
-            var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
-            tasks.Add(cityTask);
-            var state = stateTask.Result;
-            var city = cityTask.Result;
+            IActionResult response = null;
+            var claims = this.ExtractClaimsFromAuthorizationHeaderBearerToken(this.Request.Headers);
 
-            await Task.WhenAll(tasks);
-
-            var userVisit = new Visit()
+            //NOTE: Right now this always evaluates to true, because the BearerTokenDecryptor is hard coded to
+            //return this claim.
+            if (ClaimsChecker.IsAllowed("POST", "*", claims))
             {
-                Created = DateTime.UtcNow,
-                User = user,
-                CityId = city.CityId,
-                StateId = state.StateId,
-                VisitId = Guid.NewGuid().ToString()
-            };
-            await this.VisitsRepository.SaveVisit(userVisit);
 
-            var visitRepresentation = new VisitRepresentation()
+                var tasks = new List<Task>();
+                var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
+                tasks.Add(stateTask);
+                var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
+                tasks.Add(cityTask);
+                var state = stateTask.Result;
+                var city = cityTask.Result;
+
+                //Do all these tasks at once and wait for all to complete.
+                await Task.WhenAll(tasks);
+
+                //Persist to the repository
+                var userVisit = new Visit()
+                {
+                    Created = DateTime.UtcNow,
+                    User = user,
+                    CityId = city.CityId,
+                    StateId = state.StateId,
+                    VisitId = Guid.NewGuid().ToString()
+                };
+                await this.VisitsRepository.SaveVisit(userVisit);
+
+
+                //Convert to representation.
+                var visitRepresentation = new VisitRepresentation()
+                {
+                    City = city.Name,
+                    Created = userVisit.Created,
+                    State = state.Abbreviation,
+                    User = user,
+                    VisitId = userVisit.VisitId
+                };
+
+                response = this.Ok(visitRepresentation);
+
+            }
+            else
             {
-                City = city.Name,
-                Created = userVisit.Created,
-                State = state.Abbreviation,
-                User = user,
-                VisitId = userVisit.VisitId
-            };
+                response = this.Unauthorized();
+            }
 
-            return this.Ok(visitRepresentation);
+            return response;
         }
         
         [HttpDelete("user/{user}/visit/{visit}")]
         public async Task<IActionResult> DeleteUserVisit(int user, string visit)
         {
-            await this.VisitsRepository.DeleteVisit(user, visit);
+            IActionResult response = null;
+            var claims = this.ExtractClaimsFromAuthorizationHeaderBearerToken(this.Request.Headers);
 
-            //200 OK is always returned unless there is an internal server error, because this is an
-            //idempotent call. If there is an error, the framework will auto reply with 500 internal server error.
-            return this.Ok();
+            //NOTE: Right now this always evaluates to true, because the BearerTokenDecryptor is hard coded to
+            //return this claim.
+            if (ClaimsChecker.IsAllowed("DELETE", "*", claims))
+            {
+                await this.VisitsRepository.DeleteVisit(user, visit);
+
+                //200 OK is always returned unless there is an internal server error, because this is an
+                //idempotent call. If there is an error, the framework will auto reply with 500 internal server error.
+                response = this.Ok();
+            }
+            else
+            {
+                response = this.Unauthorized();
+            }
+
+            return response;
         }
 
         private async Task EnsureCityCacheIsPopulated()

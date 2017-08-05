@@ -66,4 +66,14 @@ You may use whatever language or tools you wish to complete the exercise.  Keep 
 Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=restapiprojectspivey;Persist Security Info=False;User ID=restadmin;Password=Walking in the woods.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
 ##Usage Notes
+- In any project other than a sample, you never commit credentials to a repository, whether it's in source code or notes. But for this sample project, they are included 
+- in the appSettings.json for convenience and are pointing to an Azure SQL instance I'm leaving running this week.
+- Time boxing the project, but the appSettings should contain an encrypted connection string.
 - API paging is allowed, like the following example: HTTP GET http://localhost:61372/user/1/visits?skip=0&take=1
+- There is no Authorization header required, but the reference implementation with TODO statements is in the Web API project's Authorization folder set of classes.
+- Claims are checked before POST visit and DELETE visit, but are hard coded to always succeed. GET any resource is not checked at all.
+- This API only is setup to use JSON, but a XML Media Formatter could be used to also accept XML.
+- There's some unit tests.
+- Time boxing this project, there's currently no rate limiting, but it could be implemented in the controllers and use a server-side cache or a shared-cache if 
+  it the rate limiting should be constrained across the whole server farm, or it could be constrained per user or IP address.
+

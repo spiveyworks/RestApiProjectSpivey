@@ -7,6 +7,24 @@ using System.Linq;
 
 namespace FileGeographyRepository
 {
+    //The purpose of this is to demonstrate that the web application does not have to have one huge
+    //database for the application, but can have multiple repositories serving different entities,
+    //with each repository using SQL, MongoDB, AWS DynamoDB or anything. The tradeoff is you do want
+    //these to be relatively coarse grained and not too many different repositories, but have them
+    //in some logical grouping. The other tradeoff is if you use different repositories and there needs
+    //to be relations between them, then that is combined in a higher layer. So it might not be as
+    //operationally efficient as putting everything in one database, but it might endup being more
+    //manageable or more agile by allowing new persistence technologies to be introduced and use it
+    //with one repository, rather than having to rewrite the entire application to use the new
+    //persistence technology. Also, the objects in .NET might homogenize on one data type, but it might
+    //be discovered later that the new persistence technology doesn't allow that datatype and so you
+    //have to resort to conversions. For example, Azure Table Storage doesn't allow Int16, but if you
+    //already have an Int16/tinyint in your SQL implementation and your web API represents it in Int16,
+    //then you will be forced to do the conversion inside the repository.
+
+    /// <summary>
+    /// Retrieves cities and states from files in the file system
+    /// </summary>
     public class FileGeographyRepository : IGeographyRepository
     {
         private string _citiesCsvFilePath;

@@ -49,6 +49,8 @@ namespace WebApi
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            VisitsRepositoryFactory.ConnectionString = Configuration.GetSection("Visits").GetValue<string>("ConnectionString");
+
             //((FileGeographyRepository.FileGeographyRepository)app.ApplicationServices.GetService<IGeographyRepository>()).CitiesCsvFilePath = @"C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\data\City.csv";
             //((FileGeographyRepository.FileGeographyRepository)app.ApplicationServices.GetService<IGeographyRepository>()).StatesCsvFilePath = @"C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\data\State.csv";
 
