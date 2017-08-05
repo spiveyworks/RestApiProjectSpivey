@@ -97,4 +97,4 @@ Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=
   it the rate limiting should be constrained across the whole server farm, or it could be constrained per user or IP address.
 - Time voxing the project, but it would be good to add diagnostics so we could turn on information, verbose or error logging to see what's going on.
 - The database is made compact by using ints, while the HTTP representation outward is more human readable. It's not always necessary to be so compact in a DB,
-- but it's a desirable characteristic for performance and Machine Learning, which will need strings tokenized anyways.
+- but it's a desirable characteristic for performance and Machine Learning, which will need strings tokenized anyways. But it does make the DB less human readable.

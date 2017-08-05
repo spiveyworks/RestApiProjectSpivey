@@ -45,6 +45,9 @@ namespace WebApi.Controllers
                         stateCitiesRepresentation.Cities = cities.Select(c => c.Name).ToArray();
 
                     response = this.Ok(stateCitiesRepresentation);
+
+                    //TODO: Should make the following configurable
+                    this.Response.Headers.Add("Cache-Control", "public, max-age=31536000");
                 }
                 else
                 {
