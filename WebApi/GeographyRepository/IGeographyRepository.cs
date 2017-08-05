@@ -10,5 +10,7 @@ namespace GeographyRepository
         Task<bool> DoesStateExistAsync(string stateAbbreviation);
         Task<IEnumerable<State>> GetStatesAsync();
         Task<IEnumerable<City>> GetCitiesAsync(string stateAbbreviation);
+        Task<City> GetCityAsync(int cityId);
+        Task<State> GetStateAsync(short stateId);
     }
 }

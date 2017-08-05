@@ -22,42 +22,53 @@ namespace FileGeographyRepository
         {
             var cities = new List<City>();
             string[] lines = null;
+            var stateAbbreviationUpper = stateAbbreviation.ToUpper();
+            var state = (await this.GetStatesAsync()).Where(s => s.Abbreviation.ToUpper() == stateAbbreviationUpper).FirstOrDefault();
 
-            try
-            {
-                lines = System.IO.File.ReadAllLines(this._citiesCsvFilePath);
-
-                //Remove the first line file header
-                if (lines.Length > 0)
-                    lines = lines.Skip(0).ToArray();
-            }
-            catch (Exception exc)
+            if (state != null)
             {
 
-            }
-
-            var currentCityId = 1;
-
-            if (lines != null && lines.Length > 0)
-                foreach (var line in lines)
+                try
                 {
-                    try
-                    {
-                        var data = line.Split(',');
-                        var city = new City()
-                        {
-                            CityId = currentCityId,
-                            Name = data[0],
-                            StateId = short.Parse(data[1])
-                        };
-                        cities.Add(city);
-                        currentCityId += 1;
-                    }
-                    catch
-                    {
-                        //Swallow any problem with an individual record
-                    }
+                    lines = System.IO.File.ReadAllLines(this._citiesCsvFilePath);
+
+                    //Remove the first line file header
+                    if (lines.Length > 0)
+                        lines = lines.Skip(1).ToArray();
                 }
+                catch (Exception exc)
+                {
+
+                }
+
+                var currentCityId = 1;
+
+                if (lines != null && lines.Length > 0)
+                    foreach (var line in lines)
+                    {
+                        try
+                        {
+                            var data = line.Split(',');
+                            var city = new City()
+                            {
+                                CityId = currentCityId,
+                                Name = data[0],
+                                StateId = short.Parse(data[1])
+                            };
+
+                            if (city.StateId == state.StateId)
+                            {
+                                cities.Add(city);
+                                currentCityId += 1;
+                            }
+                        }
+                        catch
+                        {
+                            //Swallow any problem with an individual record
+                        }
+                    }
+
+            }
 
             return cities;
         }
@@ -67,6 +78,10 @@ namespace FileGeographyRepository
             var states = new List<State>();
             var lines = System.IO.File.ReadAllLines(this._statesCsvFilePath);
             short currentStateId = 1;
+
+            //Remove the first line file header
+            if (lines.Length > 0)
+                lines = lines.Skip(1).ToArray();
 
             if (lines != null && lines.Length > 0)
                 foreach (var line in lines)
@@ -90,6 +105,57 @@ namespace FileGeographyRepository
             var stateAbbreviationUpper = stateAbbreviation.ToUpper();
             var states = await this.GetStatesAsync();
             return states.Where(state => state.Abbreviation.ToUpper() == stateAbbreviationUpper).FirstOrDefault() != null;
+        }
+        
+        public async Task<City> GetCityAsync(int cityId)
+        {
+            var cities = new List<City>();
+            string[] lines = null;
+
+            try
+            {
+                lines = System.IO.File.ReadAllLines(this._citiesCsvFilePath);
+
+                //Remove the first line file header
+                if (lines.Length > 0)
+                    lines = lines.Skip(1).ToArray();
+            }
+            catch (Exception exc)
+            {
+
+            }
+
+            var currentCityId = 1;
+
+            if (lines != null && lines.Length > 0)
+                foreach (var line in lines)
+                {
+                    try
+                    {
+                        var data = line.Split(',');
+                        var city = new City()
+                        {
+                            CityId = currentCityId,
+                            Name = data[0],
+                            StateId = short.Parse(data[1])
+                        };
+
+                        cities.Add(city);
+                        currentCityId += 1;
+                    }
+                    catch
+                    {
+                        //Swallow any problem with an individual record
+                    }
+                }
+                
+            return cities.Where(city => city.CityId == cityId).FirstOrDefault();
+        }
+
+        public async Task<State> GetStateAsync(short stateId)
+        {
+            var state = (await this.GetStatesAsync()).Where(s => s.StateId == stateId).FirstOrDefault();
+            return state;
         }
     }
 }

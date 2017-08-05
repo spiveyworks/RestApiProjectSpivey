@@ -1,0 +1,7 @@
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\bin\Debug\netcoreapp1.1\VisitsRepository.deps.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\bin\Debug\netcoreapp1.1\VisitsRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\bin\Debug\netcoreapp1.1\VisitsRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\obj\Debug\netcoreapp1.1\VisitsRepository.AssemblyInfo.cs
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\obj\Debug\netcoreapp1.1\VisitsRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\obj\Debug\netcoreapp1.1\VisitsRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\VisitsRepository\obj\Debug\netcoreapp1.1\VisitsRepository.csprojResolveAssemblyReference.cache

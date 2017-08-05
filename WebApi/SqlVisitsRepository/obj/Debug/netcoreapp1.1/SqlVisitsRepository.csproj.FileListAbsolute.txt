@@ -1,0 +1,9 @@
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\bin\Debug\netcoreapp1.1\SqlVisitsRepository.deps.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\bin\Debug\netcoreapp1.1\SqlVisitsRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\bin\Debug\netcoreapp1.1\SqlVisitsRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\obj\Debug\netcoreapp1.1\SqlVisitsRepository.AssemblyInfo.cs
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\obj\Debug\netcoreapp1.1\SqlVisitsRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\obj\Debug\netcoreapp1.1\SqlVisitsRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\obj\Debug\netcoreapp1.1\SqlVisitsRepository.csprojResolveAssemblyReference.cache
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\bin\Debug\netcoreapp1.1\VisitsRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\SqlVisitsRepository\bin\Debug\netcoreapp1.1\VisitsRepository.pdb

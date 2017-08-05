@@ -19,6 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\GeographyRepository\GeographyRepository.csproj" />
     <ProjectReference Include="..\InMemoryGeographyRepository\FileGeographyRepository.csproj" />
+    <ProjectReference Include="..\SqlVisitsRepository\SqlVisitsRepository.csproj" />
+    <ProjectReference Include="..\VisitsRepository\VisitsRepository.csproj" />
   </ItemGroup>
 
 </Project>

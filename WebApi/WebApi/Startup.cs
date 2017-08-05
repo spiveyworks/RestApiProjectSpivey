@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using GeographyRepository;
 using WebApi.Geography;
+using VisitsRepository;
 
 namespace WebApi
 {
@@ -32,6 +33,10 @@ namespace WebApi
             services.AddTransient<IGeographyRepository>((s) =>
             {
                 return GeographyRepositoryFactory.GetInstance();
+            });
+            services.AddTransient<IVisitsRepository>((s) =>
+            {
+                return VisitsRepositoryFactory.GetInstance();
             });
 
             // Add framework services.
