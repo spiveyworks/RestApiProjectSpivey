@@ -1,0 +1,14 @@
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApiUnitTest.deps.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApiUnitTest.runtimeconfig.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApiUnitTest.runtimeconfig.dev.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\obj\Debug\netcoreapp1.1\WebApiUnitTest.csprojResolveAssemblyReference.cache
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\obj\Debug\netcoreapp1.1\WebApiUnitTest.AssemblyInfo.cs
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApiUnitTest.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApiUnitTest.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApi.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApi.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\obj\Debug\netcoreapp1.1\WebApiUnitTest.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\obj\Debug\netcoreapp1.1\WebApiUnitTest.pdb
