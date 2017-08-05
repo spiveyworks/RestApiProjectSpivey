@@ -39,7 +39,7 @@ namespace WebApi.Controllers
             IActionResult response = null;
             var skip = 0;
             var take = 1000;
-
+            
             //Extract skip query string param if it exists
             if (Request != null && Request.Query.Where(item => item.Key == "skip").Count() > 0)
             {
@@ -62,7 +62,16 @@ namespace WebApi.Controllers
                         take = val;
             }
 
-            var visits = (await this.VisitsRepository.GetVisitsByUserId(user, skip, take)).ToArray();
+            var tasks = new List<Task>();
+            var visitsTask = this.VisitsRepository.GetVisitsByUserId(user, skip, take);
+            tasks.Add(visitsTask);
+            var cityCacheTask = this.EnsureCityCacheIsPopulated();
+            tasks.Add(cityCacheTask);
+            var stateCacheTask = this.EnsureStateCacheIsPopulated();
+            tasks.Add(stateCacheTask);
+            await Task.WhenAll(tasks.ToArray());
+
+            var visits = visitsTask.Result.ToArray();
 
             if (visits.Length > 0)
             {
@@ -102,8 +111,26 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetUserVisitsStates(int user)
         {
             IActionResult response = null;
-            var visits = new List<string>();
-            response = this.Ok(visits);
+            
+            var tasks = new List<Task>();
+            var statesTask = this.VisitsRepository.GetVisitsDistinctStateIds(user);
+            tasks.Add(statesTask);
+            var stateCacheTask = this.EnsureStateCacheIsPopulated();
+            tasks.Add(stateCacheTask);
+            await Task.WhenAll(tasks.ToArray());
+
+            var stateIds = statesTask.Result.ToArray();
+
+            if (stateIds.Length > 0)
+            {
+                var stateAbbreviations = stateIds.Select(sid => _statesCache.Where(s => s.StateId == sid).FirstOrDefault()).ToArray();
+                response = this.Ok(stateAbbreviations);
+            }
+            else
+            {
+                response = this.NotFound();
+            }
+
             return response;
         }
 
@@ -174,6 +201,22 @@ namespace WebApi.Controllers
         public async Task<IActionResult> DeleteUserVisit(int user, string visit)
         {
             return this.Ok();
+        }
+
+        private async Task EnsureCityCacheIsPopulated()
+        {
+            //Retrieve cities for the first time, if they haven't already. These can be cached because
+            //the dataset is relatively small and doesn't change often.
+            if (_citiesCache == null)
+                _citiesCache = (await this.GeographyRepository.GetCitiesAsync()).ToArray();
+        }
+
+        private async Task EnsureStateCacheIsPopulated()
+        {
+            //Retrieve states for the first time, if they haven't already. These can be cached because
+            //the dataset is small and doesn't change often.
+            if (_statesCache == null)
+                _statesCache = (await this.GeographyRepository.GetStatesAsync()).ToArray();
         }
     }
 }

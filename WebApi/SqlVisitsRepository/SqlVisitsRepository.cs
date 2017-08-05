@@ -24,16 +24,26 @@ namespace SqlVisitsRepository
         {
             var vid = new Guid(visitId);
             var db = new VisitsContext();
-            var rv = db.UserVisits.Where(v => v.VisitId == vid).FirstOrDefault();
+            UserVisits visitEntity = null;
+
+            try
+            {
+                visitEntity = db.UserVisits.Where(v => v.VisitId == vid).FirstOrDefault();
+            }
+            catch (Exception exc)
+            {
+                throw new RepositoryException("Problem getting a visit.", exc);
+            }
+
             Visit result = null;
 
             result = new Visit()
             {
-                CityId = rv.CityId,
-                Created = rv.Created,
-                StateId = rv.StateId,
-                User = rv.UserId,
-                VisitId = rv.VisitId.ToString()
+                CityId = visitEntity.CityId,
+                Created = visitEntity.Created,
+                StateId = visitEntity.StateId,
+                User = visitEntity.UserId,
+                VisitId = visitEntity.VisitId.ToString()
             };
 
             return result;
@@ -42,7 +52,17 @@ namespace SqlVisitsRepository
         public async Task<IEnumerable<Visit>> GetVisitsByUserId(int userId, int skip, int take)
         {
             var db = new VisitsContext();
-            var visits = db.UserVisits.Where(v => v.UserId == userId).OrderBy(v => v.Created).Skip(skip).Take(take).ToArray();
+            UserVisits[] visits = null;
+
+            try
+            {
+                visits = db.UserVisits.Where(v => v.UserId == userId).OrderBy(v => v.Created).Skip(skip).Take(take).ToArray();
+            }
+            catch (Exception exc)
+            {
+                throw new RepositoryException("Problem getting visits by userId.", exc);
+            }
+            
             var results = new List<Visit>();
 
             foreach (var v in visits)
@@ -71,8 +91,35 @@ namespace SqlVisitsRepository
                 UserId = visit.User,
                 VisitId = new Guid(visit.VisitId)
             };
-            db.UserVisits.Add(visitEntity);
+
+            try
+            {
+                db.UserVisits.Add(visitEntity);
+            }
+            catch (Exception exc)
+            {
+                throw new RepositoryException("Problem saving a visit.", exc);
+            }
+
             await db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<short>> GetVisitsDistinctStateIds(int userId)
+        {
+            var db = new VisitsContext();
+            short[] stateIds = null;
+
+            try
+            {
+                var byteStateIds = db.UserVisits.Where(v => v.UserId == userId).Select(v => v.StateId).Distinct().ToArray();
+                stateIds = byteStateIds.Select(s => (short)s).ToArray();
+            }
+            catch (Exception exc)
+            {
+                throw new RepositoryException("Problem getting distinct stateIds for a user.", exc);
+            }
+
+            return stateIds;
         }
     }
 }

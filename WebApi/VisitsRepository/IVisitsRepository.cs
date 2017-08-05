@@ -10,5 +10,6 @@ namespace VisitsRepository
         Task<Visit> GetVisit(string visitId);
         Task DeleteVisit(string visitId);
         Task<IEnumerable<Visit>> GetVisitsByUserId(int userId, int skip, int take);
+        Task<IEnumerable<short>> GetVisitsDistinctStateIds(int userId);
     }
 }
