@@ -23,6 +23,8 @@
     ".NETCoreApp,Version=v1.1": {
       "webapi/1.0.0": {
         "dependencies": {
+          "FileGeographyRepository": "1.0.0",
+          "GeographyRepository": "1.0.0",
           "Microsoft.ApplicationInsights.AspNetCore": "2.0.0",
           "Microsoft.AspNetCore": "1.1.2",
           "Microsoft.AspNetCore.Mvc": "1.1.3",
@@ -1292,6 +1294,29 @@
         },
         "compile": {
           "lib/netstandard1.0/System.Text.Encodings.Web.dll": {}
+        }
+      },
+      "filegeographyrepository/1.0.0": {
+        "dependencies": {
+          "GeographyRepository": "1.0.0",
+          "Microsoft.NETCore.App": "1.1.2"
+        },
+        "runtime": {
+          "FileGeographyRepository.dll": {}
+        },
+        "compile": {
+          "FileGeographyRepository.dll": {}
+        }
+      },
+      "geographyrepository/1.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.App": "1.1.2"
+        },
+        "runtime": {
+          "GeographyRepository.dll": {}
+        },
+        "compile": {
+          "GeographyRepository.dll": {}
         }
       },
       "libuv/1.9.1": {
@@ -3559,6 +3584,16 @@
       "sha512": "sha512-tcfPv+q/nK+5EsAxCLauIOd0kL+lZsXQ4lPKRnh8ex6O1Rm8WAN3LtF2GDFHyD0glSmUpIrgTnLhHCkMAKo3Ug==",
       "path": "system.text.encodings.web/4.3.1",
       "hashPath": "system.text.encodings.web.4.3.1.nupkg.sha512"
+    },
+    "filegeographyrepository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "geographyrepository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "libuv/1.9.1": {
       "type": "package",

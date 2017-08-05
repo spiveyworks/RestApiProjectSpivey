@@ -1,0 +1,6 @@
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\bin\Debug\netcoreapp1.1\GeographyRepository.deps.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\bin\Debug\netcoreapp1.1\GeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\bin\Debug\netcoreapp1.1\GeographyRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.AssemblyInfo.cs
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\GeographyRepository\obj\Debug\netcoreapp1.1\GeographyRepository.pdb

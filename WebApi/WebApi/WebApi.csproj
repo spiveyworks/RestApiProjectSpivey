@@ -16,5 +16,9 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeographyRepository\GeographyRepository.csproj" />
+    <ProjectReference Include="..\InMemoryGeographyRepository\FileGeographyRepository.csproj" />
+  </ItemGroup>
 
 </Project>

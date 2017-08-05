@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using GeographyRepository;
+using WebApi.Geography;
 
 namespace WebApi
 {
@@ -27,6 +29,11 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IGeographyRepository>((s) =>
+            {
+                return GeographyRepositoryFactory.GetInstance();
+            });
+
             // Add framework services.
             services.AddMvc();
         }
@@ -36,6 +43,9 @@ namespace WebApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            //((FileGeographyRepository.FileGeographyRepository)app.ApplicationServices.GetService<IGeographyRepository>()).CitiesCsvFilePath = @"C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\data\City.csv";
+            //((FileGeographyRepository.FileGeographyRepository)app.ApplicationServices.GetService<IGeographyRepository>()).StatesCsvFilePath = @"C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\data\State.csv";
 
             app.UseMvc();
         }

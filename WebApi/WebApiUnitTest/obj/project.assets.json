@@ -4033,10 +4033,27 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
+      "FileGeographyRepository/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v1.1",
+        "dependencies": {
+          "GeographyRepository": "1.0.0",
+          "Microsoft.NETCore.App": "1.1.2"
+        }
+      },
+      "GeographyRepository/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v1.1",
+        "dependencies": {
+          "Microsoft.NETCore.App": "1.1.2"
+        }
+      },
       "WebApi/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.1",
         "dependencies": {
+          "FileGeographyRepository": "1.0.0",
+          "GeographyRepository": "1.0.0",
           "Microsoft.ApplicationInsights.AspNetCore": "2.0.0",
           "Microsoft.AspNetCore": "1.1.2",
           "Microsoft.AspNetCore.Mvc": "1.1.3",
@@ -10705,6 +10722,16 @@
         "system.xml.xpath.xmldocument.4.0.1.nupkg.sha512",
         "system.xml.xpath.xmldocument.nuspec"
       ]
+    },
+    "FileGeographyRepository/1.0.0": {
+      "type": "project",
+      "path": "../InMemoryGeographyRepository/FileGeographyRepository.csproj",
+      "msbuildProject": "../InMemoryGeographyRepository/FileGeographyRepository.csproj"
+    },
+    "GeographyRepository/1.0.0": {
+      "type": "project",
+      "path": "../GeographyRepository/GeographyRepository.csproj",
+      "msbuildProject": "../GeographyRepository/GeographyRepository.csproj"
     },
     "WebApi/1.0.0": {
       "type": "project",

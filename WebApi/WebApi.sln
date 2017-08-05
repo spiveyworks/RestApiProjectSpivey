@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{8853BC84-5156-4DE4-9D3A-CC34111B3166}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{8853BC84-5156-4DE4-9D3A-CC34111B3166}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiUnitTest", "WebApiUnitTest\WebApiUnitTest.csproj", "{FBCFBCC2-0C01-41A3-9796-6F2C0AD78D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiUnitTest", "WebApiUnitTest\WebApiUnitTest.csproj", "{FBCFBCC2-0C01-41A3-9796-6F2C0AD78D1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeographyRepository", "GeographyRepository\GeographyRepository.csproj", "{794203DE-F29A-4CE9-8AD0-F00100BD64BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileGeographyRepository", "InMemoryGeographyRepository\FileGeographyRepository.csproj", "{8EAEC495-00B1-45C9-92DC-59B20B2856A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{FBCFBCC2-0C01-41A3-9796-6F2C0AD78D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBCFBCC2-0C01-41A3-9796-6F2C0AD78D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBCFBCC2-0C01-41A3-9796-6F2C0AD78D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{794203DE-F29A-4CE9-8AD0-F00100BD64BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{794203DE-F29A-4CE9-8AD0-F00100BD64BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{794203DE-F29A-4CE9-8AD0-F00100BD64BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{794203DE-F29A-4CE9-8AD0-F00100BD64BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EAEC495-00B1-45C9-92DC-59B20B2856A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EAEC495-00B1-45C9-92DC-59B20B2856A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EAEC495-00B1-45C9-92DC-59B20B2856A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EAEC495-00B1-45C9-92DC-59B20B2856A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

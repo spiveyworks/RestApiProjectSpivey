@@ -1,0 +1,9 @@
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\bin\Debug\netcoreapp1.1\FileGeographyRepository.deps.json
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\bin\Debug\netcoreapp1.1\FileGeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\bin\Debug\netcoreapp1.1\FileGeographyRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\bin\Debug\netcoreapp1.1\GeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\bin\Debug\netcoreapp1.1\GeographyRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\obj\Debug\netcoreapp1.1\FileGeographyRepository.csprojResolveAssemblyReference.cache
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\obj\Debug\netcoreapp1.1\FileGeographyRepository.AssemblyInfo.cs
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\obj\Debug\netcoreapp1.1\FileGeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\InMemoryGeographyRepository\obj\Debug\netcoreapp1.1\FileGeographyRepository.pdb

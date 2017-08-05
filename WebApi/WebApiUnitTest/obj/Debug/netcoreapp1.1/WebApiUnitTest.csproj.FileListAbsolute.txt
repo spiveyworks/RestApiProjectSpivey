@@ -12,3 +12,7 @@ C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\D
 C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\WebApi.pdb
 C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\obj\Debug\netcoreapp1.1\WebApiUnitTest.dll
 C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\obj\Debug\netcoreapp1.1\WebApiUnitTest.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\FileGeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\GeographyRepository.dll
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\FileGeographyRepository.pdb
+C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\WebApi\WebApiUnitTest\bin\Debug\netcoreapp1.1\GeographyRepository.pdb

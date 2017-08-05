@@ -9,22 +9,22 @@ namespace WebApiUnitTest
     [TestClass]
     public class GeographyUnitTest
     {
-        private const string _existingState = "NC";
+        private const string _existingState = "AL";
         private const string _nonExistingState = "AA";
 
         [TestMethod]
         public async Task GetExistingStateCities()
         {
-            var controller = new GeographyController();
+            var controller = new GeographyController(GeographyRepositoryFactory.GetInstance());
             var result = await controller.GetStateCities(_existingState);
             Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
 
         [TestMethod]
-        public void GetNonExistingStateCities()
+        public async void GetNonExistingStateCities()
         {
-            var controller = new GeographyController();
-            var result = controller.GetStateCities(_nonExistingState);
+            var controller = new GeographyController(GeographyRepositoryFactory.GetInstance());
+            var result = await controller.GetStateCities(_nonExistingState);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
     }

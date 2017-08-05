@@ -16,7 +16,7 @@ namespace WebApiUnitTest
         private const string _nonExistingVisit = "nonexistingvisit";
         private const string _existingCity = "Akron";
         private const string _nonExistingCity = "nonexistingcity";
-        private const string _existingState = "NC";
+        private const string _existingState = "AL";
         private const string _nonExistingState = "nonexistingstate";
 
         #region GetUserVisits
