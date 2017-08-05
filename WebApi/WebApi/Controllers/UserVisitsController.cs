@@ -98,7 +98,14 @@ namespace WebApi.Controllers
                         State = _statesCache.Where(s => s.StateId == visit.StateId).FirstOrDefault().Abbreviation,
                         Created = visit.Created,
                         User = visit.User,
-                        VisitId = visit.VisitId
+                        VisitId = visit.VisitId,
+                        Links = new VisitRepresentationLinks()
+                        {
+                            Self = new Link()
+                            {
+                                Href = string.Format("/user/{0}/visit/{1}", visit.User, visit.VisitId)
+                            }
+                        }
                     });
 
                 response = this.Ok(visitRepresentations);
@@ -167,7 +174,14 @@ namespace WebApi.Controllers
                     Created = userVisit.Created,
                     City = city.Name,
                     State = state.Abbreviation,
-                    VisitId = userVisit.VisitId
+                    VisitId = userVisit.VisitId,
+                    Links = new VisitRepresentationLinks()
+                    {
+                        Self = new Link()
+                        {
+                            Href = string.Format("/user/{0}/visit/{1}", userVisit.User, userVisit.VisitId)
+                        }
+                    }
                 };
                 response = this.Ok(visitRepresentation);
             }
@@ -221,7 +235,14 @@ namespace WebApi.Controllers
                     Created = userVisit.Created,
                     State = state.Abbreviation,
                     User = user,
-                    VisitId = userVisit.VisitId
+                    VisitId = userVisit.VisitId,
+                    Links = new VisitRepresentationLinks()
+                    {
+                        Self = new Link()
+                        {
+                            Href = string.Format("/user/{0}/visit/{1}", userVisit.User, userVisit.VisitId)
+                        }
+                    }
                 };
 
                 response = this.Ok(visitRepresentation);

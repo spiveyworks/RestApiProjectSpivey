@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiUnitTest", "WebApiUnitTest\WebApiUnitTest.csproj", "{FBCFBCC2-0C01-41A3-9796-6F2C0AD78D1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeographyRepository", "GeographyRepository\GeographyRepository.csproj", "{794203DE-F29A-4CE9-8AD0-F00100BD64BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeographyRepository", "GeographyRepository\GeographyRepository.csproj", "{794203DE-F29A-4CE9-8AD0-F00100BD64BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileGeographyRepository", "InMemoryGeographyRepository\FileGeographyRepository.csproj", "{8EAEC495-00B1-45C9-92DC-59B20B2856A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileGeographyRepository", "InMemoryGeographyRepository\FileGeographyRepository.csproj", "{8EAEC495-00B1-45C9-92DC-59B20B2856A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisitsRepository", "VisitsRepository\VisitsRepository.csproj", "{362FD5A9-F6F0-42C1-B359-3C2AC68E6E01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisitsRepository", "VisitsRepository\VisitsRepository.csproj", "{362FD5A9-F6F0-42C1-B359-3C2AC68E6E01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlVisitsRepository", "SqlVisitsRepository\SqlVisitsRepository.csproj", "{FDE01BB3-8E39-48F9-89A0-D07F3D559353}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlVisitsRepository", "SqlVisitsRepository\SqlVisitsRepository.csproj", "{FDE01BB3-8E39-48F9-89A0-D07F3D559353}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "VisitsDatabase", "..\..\..\Visual Studio 2017\Projects\VisitsDatabase\VisitsDatabase.sqlproj", "{B274A070-187D-4385-9A84-3288DED6321D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,12 @@ Global
 		{FDE01BB3-8E39-48F9-89A0-D07F3D559353}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDE01BB3-8E39-48F9-89A0-D07F3D559353}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDE01BB3-8E39-48F9-89A0-D07F3D559353}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B274A070-187D-4385-9A84-3288DED6321D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B274A070-187D-4385-9A84-3288DED6321D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B274A070-187D-4385-9A84-3288DED6321D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B274A070-187D-4385-9A84-3288DED6321D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B274A070-187D-4385-9A84-3288DED6321D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B274A070-187D-4385-9A84-3288DED6321D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

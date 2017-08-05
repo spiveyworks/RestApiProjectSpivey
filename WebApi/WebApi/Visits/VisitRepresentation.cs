@@ -12,5 +12,6 @@ namespace WebApi.Visits
         public int User { get; set; }
         public DateTime Created { get; set; }
         public string VisitId { get; set; }
+        public VisitRepresentationLinks Links { get; set; }
     }
 }
