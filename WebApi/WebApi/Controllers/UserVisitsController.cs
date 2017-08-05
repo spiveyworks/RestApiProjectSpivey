@@ -32,17 +32,51 @@ namespace WebApi.Controllers
         
         [HttpGet]
         [Route("user/{user}/visits")]
-        public async Task<IActionResult> GetUserVisits(string user)
+        public async Task<IActionResult> GetUserVisits(int user)
         {
             IActionResult response = null;
-            var visits = new List<string>();
-            response = this.Ok(visits);
+            var skip = 0;
+            var take = 1000;
+
+            //Extract skip query string param if it exists
+            if (Request != null && Request.Query.Where(item => item.Key == "skip").Count() > 0)
+            {
+                var valString = Request.Query.Where(item => item.Key == "skip").FirstOrDefault().Value;
+                var val = 0;
+
+                if (int.TryParse(valString, out val))
+                    if (val >= 0)
+                        skip = val;
+            }
+
+            //Extract take query string param if it exists
+            if (Request != null && Request.Query.Where(item => item.Key == "take").Count() > 0)
+            {
+                var valString = Request.Query.Where(item => item.Key == "take").FirstOrDefault().Value;
+                var val = 0;
+
+                if (int.TryParse(valString, out val))
+                    if (val >= 0)
+                        take = val;
+            }
+
+            var visits = (await this.VisitsRepository.GetVisitsByUserId(user, skip, take)).ToArray();
+
+            if (visits.Length > 0)
+            {
+                response = this.Ok(visits);
+            }
+            else
+            {
+                response = this.NotFound();
+            }
+            
             return response;
         }
 
         [HttpGet]
         [Route("user/{user}/visits/states")]
-        public async Task<IActionResult> GetUserVisitsStates(string user)
+        public async Task<IActionResult> GetUserVisitsStates(int user)
         {
             IActionResult response = null;
             var visits = new List<string>();
@@ -52,7 +86,7 @@ namespace WebApi.Controllers
 
         [HttpGet()]
         [Route("user/{user}/visit/{visit}")]
-        public async Task<IActionResult> GetUserVisit(string user, string visit)
+        public async Task<IActionResult> GetUserVisit(int user, string visit)
         {
             IActionResult response = null;
 
@@ -89,13 +123,13 @@ namespace WebApi.Controllers
         
         [HttpPost]
         [Route("user/{user}/visits")]
-        public async Task<IActionResult> PostUserVisit(string user, [FromBody]PostVisitRepresentation visit)
+        public async Task<IActionResult> PostUserVisit(int user, [FromBody]PostVisitRepresentation visit)
         {
             return this.Ok();
         }
         
         [HttpDelete("user/{user}/visit/{visit}")]
-        public async Task<IActionResult> DeleteUserVisit(string user, string visit)
+        public async Task<IActionResult> DeleteUserVisit(int user, string visit)
         {
             return this.Ok();
         }

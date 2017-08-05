@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VisitsRepository;
@@ -31,18 +32,33 @@ namespace SqlVisitsRepository
                 CityId = rv.CityId,
                 Created = rv.Created,
                 StateId = rv.StateId,
-                User = rv.UserId.ToString()
+                User = rv.UserId
             };
 
             return result;
         }
 
-        public Task<Visit> GetVisitByStateId(short stateId)
+        public async Task<IEnumerable<Visit>> GetVisitsByUserId(int userId, int skip, int take)
         {
-            throw new NotImplementedException();
+            var db = new VisitsContext();
+            var visits = db.UserVisits.Where(v => v.UserId == userId).OrderBy(v => v.Created).Skip(skip).Take(take).ToArray();
+            var results = new List<Visit>();
+
+            foreach (var v in visits)
+            {
+                results.Add(new Visit()
+                {
+                    CityId = v.CityId,
+                    Created = v.Created,
+                    StateId = v.StateId,
+                    User = v.UserId
+                });
+            }
+
+            return results;
         }
 
-        public Task SaveVisit(Visit visit)
+        public async Task SaveVisit(Visit visit)
         {
             throw new NotImplementedException();
         }

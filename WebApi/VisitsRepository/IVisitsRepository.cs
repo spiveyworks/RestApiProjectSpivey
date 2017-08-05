@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace VisitsRepository
@@ -8,6 +9,6 @@ namespace VisitsRepository
         Task SaveVisit(Visit visit);
         Task<Visit> GetVisit(string visitId);
         Task DeleteVisit(string visitId);
-        Task<Visit> GetVisitByStateId(short stateId);
+        Task<IEnumerable<Visit>> GetVisitsByUserId(int userId, int skip, int take);
     }
 }

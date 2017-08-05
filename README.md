@@ -65,6 +65,5 @@ You may use whatever language or tools you wish to complete the exercise.  Keep 
 - The SQL database is running in Azure with the following connection string:
 Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=restapiprojectspivey;Persist Security Info=False;User ID=restadmin;Password=Walking in the woods.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
-- Test User in this database is user: michaelspivey@spiveyworks.com and password: TestPassword1.
-
-
+##Usage Notes
+- API paging is allowed, like the following example: HTTP GET http://localhost:61372/user/1/visits?skip=0&take=1

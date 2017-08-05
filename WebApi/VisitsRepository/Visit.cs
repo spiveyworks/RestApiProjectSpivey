@@ -8,7 +8,7 @@ namespace VisitsRepository
     {
         public int CityId { get; set; }
         public short StateId { get; set; }
-        public string User { get; set; }
+        public int User { get; set; }
         public DateTime Created { get; set; }
     }
 }

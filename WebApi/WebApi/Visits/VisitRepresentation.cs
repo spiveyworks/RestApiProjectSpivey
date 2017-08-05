@@ -9,7 +9,7 @@ namespace WebApi.Visits
     {
         public string City { get; set; }
         public string State { get; set; }
-        public string User { get; set; }
+        public int User { get; set; }
         public DateTime Created { get; set; }
     }
 }

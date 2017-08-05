@@ -10,18 +10,18 @@ namespace WebApiUnitTest
     [TestClass]
     public class UserVisitsUnitTest
     {
-        private const string _existingUser = "1";
-        private const string _nonExistingUser = "100";
+        private const int _existingUser = 1;
+        private const int _nonExistingUser = 100;
         private const string _existingVisit = "86c541a5-2ef9-410e-8481-dea3ca7947e8";
         private const string _nonExistingVisit = "11c541a5-2ef9-410e-8481-dea3ca7947e8";
         private const string _existingCity = "Akron";
         private const string _nonExistingCity = "nonexistingcity";
-        private const string _existingCityId = "1";
-        private const string _nonExistingCityId = "1000";
+        private const int _existingCityId = 1;
+        private const int _nonExistingCityId = 1000;
         private const string _existingState = "AL";
         private const string _nonExistingState = "NA";
-        private const string _existingStateId = "1";
-        private const string _nonExistingStateId = "51";
+        private const short _existingStateId = 1;
+        private const short _nonExistingStateId = 51;
 
         #region GetUserVisits
 
@@ -37,7 +37,7 @@ namespace WebApiUnitTest
         public async Task GetUserVisitsForNonExistingUser()
         {
             var controller = new UserVisitsController(VisitsRepositoryFactory.GetInstance(), GeographyRepositoryFactory.GetInstance());
-            var result = controller.GetUserVisits(_nonExistingUser);
+            var result = await controller.GetUserVisits(_nonExistingUser);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }
 
