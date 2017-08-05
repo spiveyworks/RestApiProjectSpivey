@@ -1,13 +1,16 @@
 ﻿using GeographyRepository;
+using Microsoft.Extensions.Configuration;
 
 namespace WebApi.Geography
 {
     public static class GeographyRepositoryFactory
     {
+        public static IConfigurationSection ConfigurationSection { get; set; }
+
         public static IGeographyRepository GetInstance()
         {
-            return new FileGeographyRepository.FileGeographyRepository(citiesCsvFilePath: @"C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\data\City.csv", 
-                                                                       statesCsvFilePath: @"C:\Users\micha\Documents\GitHub\RestApiProjectSpivey\data\State.csv");
+            return new FileGeographyRepository.FileGeographyRepository(citiesCsvFilePath: ConfigurationSection.GetValue<string>("CitiesCsvFilePath"), 
+                                                                       statesCsvFilePath: ConfigurationSection.GetValue<string>("StatesCsvFilePath"));
         }
     }
 }
