@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Controllers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace WebApiUnitTest
 {
@@ -15,7 +16,7 @@ namespace WebApiUnitTest
         [TestMethod]
         public async Task GetExistingStateCities()
         {
-            var controller = new GeographyController(GeographyRepositoryFactory.GetInstance());
+            var controller = new GeographyController(new TestLogger<GeographyController>(), GeographyRepositoryFactory.GetInstance());
             var result = await controller.GetStateCities(_existingState);
             Assert.IsTrue(result.GetType().Equals(typeof(OkObjectResult)));
         }
@@ -23,7 +24,7 @@ namespace WebApiUnitTest
         [TestMethod]
         public async void GetNonExistingStateCities()
         {
-            var controller = new GeographyController(GeographyRepositoryFactory.GetInstance());
+            var controller = new GeographyController(new TestLogger<GeographyController>(), GeographyRepositoryFactory.GetInstance());
             var result = await controller.GetStateCities(_nonExistingState);
             Assert.IsTrue(result.GetType().Equals(typeof(NotFoundResult)));
         }

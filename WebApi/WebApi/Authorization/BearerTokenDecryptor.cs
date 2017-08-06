@@ -17,6 +17,9 @@ namespace WebApi.Authorization
             claims.Add("POST *");
             claims.Add("DELETE *");
 
+            //TODO: This is hard coded to always be user 1 right now.
+            claims.Add("user=1");
+
             return claims.ToArray();
         }
     }

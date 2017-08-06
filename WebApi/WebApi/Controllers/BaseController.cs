@@ -24,5 +24,22 @@ namespace WebApi.Controllers
 
             return claims;
         }
+
+        protected Nullable<int> ExtractClaimsUserId(string[] claims)
+        {
+            Nullable<int> userId = null;
+
+            try
+            {
+                var userIdString = claims.Where(c => c.StartsWith("user=")).Select(c => c.Split('=')[1]).FirstOrDefault();
+                int userIdVal;
+
+                if (int.TryParse(userIdString, out userIdVal))
+                    userId = new Nullable<int>(userIdVal);
+            }
+            catch { }
+
+            return userId;
+        }
     }
 }

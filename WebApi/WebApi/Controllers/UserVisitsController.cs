@@ -8,11 +8,13 @@ using VisitsRepository;
 using GeographyRepository;
 using Microsoft.AspNetCore.Http;
 using WebApi.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
     public class UserVisitsController : BaseController
     {
+        private readonly ILogger _logger;
         private IVisitsRepository _visitsRepository;
         private IGeographyRepository _geographyRepository;
         private static State[] _statesCache = null;
@@ -28,8 +30,9 @@ namespace WebApi.Controllers
             get { return this._geographyRepository; }
         }
 
-        public UserVisitsController(IVisitsRepository visitsRepository, IGeographyRepository geographyRepository)
+        public UserVisitsController(ILogger<GeographyController> logger, IVisitsRepository visitsRepository, IGeographyRepository geographyRepository)
         {
+            this._logger = logger;
             this._visitsRepository = visitsRepository;
             this._geographyRepository = geographyRepository;
         }
@@ -41,7 +44,9 @@ namespace WebApi.Controllers
             IActionResult response = null;
             var skip = 0;
             var take = 1000;
-            
+
+            this._logger.LogInformation(LoggingEvents.GET_USER_VISITS, "Getting user visits for userId={user}", user);
+
             //Extract skip query string param if it exists
             if (Request != null && Request.Query.Where(item => item.Key == "skip").Count() > 0)
             {
@@ -123,7 +128,8 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetUserVisitsStates(int user)
         {
             IActionResult response = null;
-            
+            this._logger.LogInformation(LoggingEvents.GET_USER_VISITS_STATES, "Getting user visits states for userId={user}", user);
+
             var tasks = new List<Task>();
             var statesTask = this.VisitsRepository.GetVisitsDistinctStateIds(user);
             tasks.Add(statesTask);
@@ -153,7 +159,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetUserVisit(int user, string visit)
         {
             IActionResult response = null;
-
+            this._logger.LogInformation(LoggingEvents.GET_USER_VISIT, "Getting user visit for userId={user} and visitId={visit}", user, visit);
             var userVisit = await this.VisitsRepository.GetVisit(visit);
 
             //Validate
@@ -198,58 +204,67 @@ namespace WebApi.Controllers
         public async Task<IActionResult> PostUserVisit(int user, [FromBody]PostVisitRepresentation visit)
         {
             IActionResult response = null;
+            this._logger.LogInformation(LoggingEvents.POST_USER_VISIT, "Post user visit for userId={user}", user);
             var claims = this.ExtractClaimsFromAuthorizationHeaderBearerToken(this.Request.Headers);
 
             //NOTE: Right now this always evaluates to true, because the BearerTokenDecryptor is hard coded to
             //return this claim.
             if (ClaimsChecker.IsAllowed("POST", "*", claims))
             {
-
-                var tasks = new List<Task>();
-                var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
-                tasks.Add(stateTask);
-                var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
-                tasks.Add(cityTask);
-                var state = stateTask.Result;
-                var city = cityTask.Result;
-
-                //Do all these tasks at once and wait for all to complete.
-                await Task.WhenAll(tasks);
-
-                //Persist to the repository
-                var userVisit = new Visit()
+                var claimsUserId = this.ExtractClaimsUserId(claims);
+                if (claimsUserId.HasValue && user == claimsUserId.Value)
                 {
-                    Created = DateTime.UtcNow,
-                    User = user,
-                    CityId = city.CityId,
-                    StateId = state.StateId,
-                    VisitId = Guid.NewGuid().ToString()
-                };
-                await this.VisitsRepository.SaveVisit(userVisit);
+                    var tasks = new List<Task>();
+                    var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
+                    tasks.Add(stateTask);
+                    var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
+                    tasks.Add(cityTask);
+                    var state = stateTask.Result;
+                    var city = cityTask.Result;
 
+                    //Do all these tasks at once and wait for all to complete.
+                    await Task.WhenAll(tasks);
 
-                //Convert to representation.
-                var visitRepresentation = new VisitRepresentation()
-                {
-                    City = city.Name,
-                    Created = userVisit.Created,
-                    State = state.Abbreviation,
-                    User = user,
-                    VisitId = userVisit.VisitId,
-                    Links = new VisitRepresentationLinks()
+                    //Persist to the repository
+                    var userVisit = new Visit()
                     {
-                        Self = new Link()
+                        Created = DateTime.UtcNow,
+                        User = user,
+                        CityId = city.CityId,
+                        StateId = state.StateId,
+                        VisitId = Guid.NewGuid().ToString()
+                    };
+                    await this.VisitsRepository.SaveVisit(userVisit);
+
+
+                    //Convert to representation.
+                    var visitRepresentation = new VisitRepresentation()
+                    {
+                        City = city.Name,
+                        Created = userVisit.Created,
+                        State = state.Abbreviation,
+                        User = user,
+                        VisitId = userVisit.VisitId,
+                        Links = new VisitRepresentationLinks()
                         {
-                            Href = string.Format("/user/{0}/visit/{1}", userVisit.User, userVisit.VisitId)
+                            Self = new Link()
+                            {
+                                Href = string.Format("/user/{0}/visit/{1}", userVisit.User, userVisit.VisitId)
+                            }
                         }
-                    }
-                };
+                    };
 
-                response = this.Ok(visitRepresentation);
-
+                    response = this.Ok(visitRepresentation);
+                }
+                else
+                {
+                    this._logger.LogWarning(LoggingEvents.POST_USER_VISIT, "Unauthorized attempt to post user visit for userId={user}", user);
+                    response = this.Unauthorized();
+                }
             }
             else
             {
+                this._logger.LogWarning(LoggingEvents.POST_USER_VISIT, "Unauthorized attempt to post user visit for userId={user}", user);
                 response = this.Unauthorized();
             }
 
@@ -260,6 +275,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> DeleteUserVisit(int user, string visit)
         {
             IActionResult response = null;
+            this._logger.LogInformation(LoggingEvents.DELETE_USER_VISIT, "Delete user visit for userId={user} and visitId={visit}", user, visit);
             var claims = this.ExtractClaimsFromAuthorizationHeaderBearerToken(this.Request.Headers);
 
             //NOTE: Right now this always evaluates to true, because the BearerTokenDecryptor is hard coded to
@@ -274,6 +290,7 @@ namespace WebApi.Controllers
             }
             else
             {
+                this._logger.LogWarning(LoggingEvents.DELETE_USER_VISIT, "Unauthorized attempt to delete user visit for userId={user} and visitId={visit}", user, visit);
                 response = this.Unauthorized();
             }
 
@@ -285,7 +302,10 @@ namespace WebApi.Controllers
             //Retrieve cities for the first time, if they haven't already. These can be cached because
             //the dataset is relatively small and doesn't change often.
             if (_citiesCache == null)
+            {
+                this._logger.LogInformation(LoggingEvents.POPULATING_CITY_CACHE, "Populating city cache.");
                 _citiesCache = (await this.GeographyRepository.GetCitiesAsync()).ToArray();
+            }
         }
 
         private async Task EnsureStateCacheIsPopulated()
@@ -293,7 +313,10 @@ namespace WebApi.Controllers
             //Retrieve states for the first time, if they haven't already. These can be cached because
             //the dataset is small and doesn't change often.
             if (_statesCache == null)
+            {
+                this._logger.LogInformation(LoggingEvents.POPULATING_STATE_CACHE, "Populating state cache.");
                 _statesCache = (await this.GeographyRepository.GetStatesAsync()).ToArray();
+            }
         }
     }
 }

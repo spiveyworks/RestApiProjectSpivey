@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GeographyRepository;
 using WebApi.Geography;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi.Controllers
 {
     public class GeographyController : BaseController
     {
+        private readonly ILogger _logger;
         private IGeographyRepository _geographyRepository;
 
         public IGeographyRepository GeographyRepository
@@ -17,8 +19,9 @@ namespace WebApi.Controllers
             get { return this._geographyRepository; }
         }
 
-        public GeographyController(IGeographyRepository geographyRepository)
+        public GeographyController(ILogger<GeographyController> logger, IGeographyRepository geographyRepository)
         {
+            this._logger = logger;
             this._geographyRepository = geographyRepository;
         }
 
@@ -27,6 +30,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetStateCities(string state)
         {
             IActionResult response = null;
+            this._logger.LogInformation(LoggingEvents.GET_STATE_CITIES, "Get cities for state={state}", state);
 
             //Input validation
             if (state.Length == 2)
@@ -46,8 +50,9 @@ namespace WebApi.Controllers
 
                     response = this.Ok(stateCitiesRepresentation);
 
-                    //TODO: Should make the following configurable
-                    this.Response.Headers.Add("Cache-Control", "public, max-age=31536000");
+                    //TODO: Should make the following configurable. Also, if is for unit test to complete.
+                    if (this.Response != null && this.Response.Headers != null)
+                        this.Response.Headers.Add("Cache-Control", "public, max-age=31536000");
                 }
                 else
                 {
