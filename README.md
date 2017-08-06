@@ -96,10 +96,11 @@ You may use whatever language or tools you wish to complete the exercise.  Keep 
 - The unit tests that are currently broken are because of this.Request being null in the controller, which happened after adding bearer token claims checks.
 - Time boxing this project, there's currently no rate limiting, but it could be implemented in the controllers and use a server-side cache or a shared-cache if 
   it the rate limiting should be constrained across the whole server farm, or it could be constrained per user or IP address.
-- Time voxing the project, but it would be good to add diagnostics so we could turn on information, verbose or error logging to see what's going on.
 - The database is made compact by using ints, while the HTTP representation outward is more human readable. It's not always necessary to be so compact in a DB,
 - but it's a desirable characteristic for performance and Machine Learning, which will need strings tokenized anyways. But it does make the DB less human readable.
-
+- This project is not complete in its hypermedia implementation, but an example of it is found in the /user/1/visits call, where each visit contains a link
+- to go get that specific visit. This allows a web crawler to navigate the web of data and it also lets developers navigate without having to have out-of-band
+- documentation to know how to create URLs.
 
 - FileGeographyRepository.cs notes
 - //The purpose of this is to demonstrate that the web application does not have to have one huge
