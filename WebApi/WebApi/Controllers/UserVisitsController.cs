@@ -14,6 +14,8 @@ namespace WebApi.Controllers
 {
     public class UserVisitsController : BaseController
     {
+        private const int MAXCITYLENGTH = 255;
+        private const int MAXSTATELENGTH = 2;
         private readonly ILogger _logger;
         private IVisitsRepository _visitsRepository;
         private IGeographyRepository _geographyRepository;
@@ -214,47 +216,61 @@ namespace WebApi.Controllers
                 var claimsUserId = this.ExtractClaimsUserId(claims);
                 if (claimsUserId.HasValue && user == claimsUserId.Value)
                 {
-                    var tasks = new List<Task>();
-                    var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
-                    tasks.Add(stateTask);
-                    var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
-                    tasks.Add(cityTask);
-                    var state = stateTask.Result;
-                    var city = cityTask.Result;
-
-                    //Do all these tasks at once and wait for all to complete.
-                    await Task.WhenAll(tasks);
-
-                    //Persist to the repository
-                    var userVisit = new Visit()
+                    //Validate input data
+                    if (!string.IsNullOrWhiteSpace(visit.City) && visit.City.Length <= MAXCITYLENGTH
+                        && !string.IsNullOrWhiteSpace(visit.State) && visit.State.Length == MAXSTATELENGTH)
                     {
-                        Created = DateTime.UtcNow,
-                        User = user,
-                        CityId = city.CityId,
-                        StateId = state.StateId,
-                        VisitId = Guid.NewGuid().ToString()
-                    };
-                    await this.VisitsRepository.SaveVisit(userVisit);
+                        //TODO: Add rate limiting check here, so even if a valid user submits valid data,
+                        //they can't create hundreds of these per minute, because it's expected to come
+                        //from a real end user and not an automated system. If a backend system does call
+                        //this API then the rate limiting can be made smarter or relaxed to a very large number.
 
+                        var tasks = new List<Task>();
+                        var stateTask = this.GeographyRepository.GetStateByAbbreviationAsync(visit.State);
+                        tasks.Add(stateTask);
+                        var cityTask = this.GeographyRepository.GetCityAsync(visit.State, visit.City);
+                        tasks.Add(cityTask);
+                        var state = stateTask.Result;
+                        var city = cityTask.Result;
 
-                    //Convert to representation.
-                    var visitRepresentation = new VisitRepresentation()
-                    {
-                        City = city.Name,
-                        Created = userVisit.Created,
-                        State = state.Abbreviation,
-                        User = user,
-                        VisitId = userVisit.VisitId,
-                        Links = new VisitRepresentationLinks()
+                        //Do all these tasks at once and wait for all to complete.
+                        await Task.WhenAll(tasks);
+
+                        //Persist to the repository
+                        var userVisit = new Visit()
                         {
-                            Self = new Link()
-                            {
-                                Href = string.Format("/user/{0}/visit/{1}", userVisit.User, userVisit.VisitId)
-                            }
-                        }
-                    };
+                            Created = DateTime.UtcNow,
+                            User = user,
+                            CityId = city.CityId,
+                            StateId = state.StateId,
+                            VisitId = Guid.NewGuid().ToString()
+                        };
+                        await this.VisitsRepository.SaveVisit(userVisit);
 
-                    response = this.Ok(visitRepresentation);
+
+                        //Convert to representation.
+                        var visitRepresentation = new VisitRepresentation()
+                        {
+                            City = city.Name,
+                            Created = userVisit.Created,
+                            State = state.Abbreviation,
+                            User = user,
+                            VisitId = userVisit.VisitId,
+                            Links = new VisitRepresentationLinks()
+                            {
+                                Self = new Link()
+                                {
+                                    Href = string.Format("/user/{0}/visit/{1}", userVisit.User, userVisit.VisitId)
+                                }
+                            }
+                        };
+
+                        response = this.Ok(visitRepresentation);
+                    }
+                    else
+                    {
+                        response = this.BadRequest("City or state too long. Use city name and state abbreviation.");
+                    }
                 }
                 else
                 {

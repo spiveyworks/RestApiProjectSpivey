@@ -1,0 +1,7 @@
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'3979b37f-39c9-4ced-a92f-184698b7348b', 1, N'2017-08-05 19:10:40', 2, 1)
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'057a7697-f622-4719-898a-44c09b0ff691', 1, N'2017-08-05 20:20:51', 1, 1)
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'3af089f2-e772-4479-a06e-61742fb0b7a0', 1, N'2017-08-05 21:18:12', 28, 1)
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'2b784907-8678-4c22-9e3e-a58aedf54a76', 1, N'2017-08-05 21:17:12', 28, 1)
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'03da0354-61a1-41ea-a375-b7305a8fc921', 1, N'2017-08-06 10:36:43', 196, 1)
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'0cd03310-bf16-4c47-9eeb-d423fb8e6d99', 1, N'2017-08-05 21:17:57', 28, 1)
+INSERT INTO [dbo].[UserVisits] ([VisitId], [UserId], [Created], [CityId], [StateId]) VALUES (N'4c741046-3adc-4d7c-8fa5-e3c3b035f4d4', 1, N'2017-08-05 20:43:28', 12, 1)

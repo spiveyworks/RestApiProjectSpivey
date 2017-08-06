@@ -69,7 +69,9 @@ Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=
 - The appSettings.json needs to be updated with your local file system copy of City.csv and State.csv.
 
 ##Usage Notes
--Valid calls that should work
+- I have a few comments throughout the source code explaining TODO's or decisions.
+- User 1 is the only user in the system, because it's hard coded in the BearerTokenDecryptor class. So HTTP POST will only work with user 1.
+- Valid calls that should work
 1. HTTP GET http://localhost:61372/user/1/visits?skip=0&take=1
 2. HTTP GET http://localhost:61372/state/al/cities
 3. HTTP GET http://localhost:61372/1/al/visits
@@ -98,4 +100,31 @@ Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=
 - Time voxing the project, but it would be good to add diagnostics so we could turn on information, verbose or error logging to see what's going on.
 - The database is made compact by using ints, while the HTTP representation outward is more human readable. It's not always necessary to be so compact in a DB,
 - but it's a desirable characteristic for performance and Machine Learning, which will need strings tokenized anyways. But it does make the DB less human readable.
-- 
+
+
+- FileGeographyRepository.cs notes
+- //The purpose of this is to demonstrate that the web application does not have to have one huge
+    //database for the application, but can have multiple repositories serving different entities,
+    //with each repository using SQL, MongoDB, AWS DynamoDB or anything. The tradeoff is you do want
+    //these to be relatively coarse grained and not too many different repositories, but have them
+    //in some logical grouping. The other tradeoff is if you use different repositories and there needs
+    //to be relations between them, then that is combined in a higher layer. So it might not be as
+    //operationally efficient as putting everything in one database, but it might endup being more
+    //manageable or more agile by allowing new persistence technologies to be introduced and use it
+    //with one repository, rather than having to rewrite the entire application to use the new
+    //persistence technology. Also, the objects in .NET might homogenize on one data type, but it might
+    //be discovered later that the new persistence technology doesn't allow that datatype and so you
+    //have to resort to conversions. For example, Azure Table Storage doesn't allow Int16, but if you
+    //already have an Int16/tinyint in your SQL implementation and your web API represents it in Int16,
+    //then you will be forced to do the conversion inside the repository.
+	
+- SqlVisitsRepository.cs notes
+- //The purpose of this is to show how it could be a SQL implementation or a new project could be created
+    //for MongoDB or AWS DynamoDB and this repository implementation could be maintained or deprecated in
+    //the future. But the web project won't be affected by choosing a different persistence technology. The
+    //VisitId is represented in the generic repository interface entities as a string, but in the SQL
+    //implementation it is being saved as a GUID. Normally you would want these data types to align, but
+    //there might be a reason for having a difference between the persistence implementation and the
+    //type shared in the generic repository interfaces. However, this can also cause the bad effect of
+    //implementation bleed-thru, where the wider type of string can allow more options than are allowed
+    //in the SQL implementation's GUID and now that lower level dependency is causing problems.
