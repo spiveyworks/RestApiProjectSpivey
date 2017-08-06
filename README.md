@@ -65,7 +65,6 @@ You may use whatever language or tools you wish to complete the exercise.  Keep 
 - Solution is implemented as a .NET Core 1.1 project that can run locally on IIS Express in VS 2017. Three things below to get setup.
 - The SQL database is running in Azure with the following connection string. You can also replace appSettings.json with your own instance of the DB.
 - A SQL create script is in the root Github folder.
-Server=tcp:restapiprojectspiveyserver.database.windows.net,1433;Initial Catalog=restapiprojectspivey;Persist Security Info=False;User ID=restadmin;Password=Walking in the woods.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 - The appSettings.json needs to be updated with your local file system copy of City.csv and State.csv.
 
 ##Usage Notes
